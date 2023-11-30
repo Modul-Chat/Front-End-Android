@@ -5,4 +5,5 @@ plugins {
     id("com.google.dagger.hilt.android") version "2.48" apply false
     id("com.google.devtools.ksp") version "1.9.0-1.0.12" apply false
     id("androidx.navigation.safeargs") version "2.5.3" apply false
+    id("com.google.protobuf") version "0.9.4" apply false
 }

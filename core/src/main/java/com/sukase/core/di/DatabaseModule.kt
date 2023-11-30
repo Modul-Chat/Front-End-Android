@@ -24,7 +24,7 @@ class DatabaseModule {
         return Room.databaseBuilder(
             context,
             SuKaMeDatabase::class.java,
-            "SuKame.db"
+            "SuKaMe.db"
         ).fallbackToDestructiveMigration().openHelperFactory(factory).build()
     }
 
