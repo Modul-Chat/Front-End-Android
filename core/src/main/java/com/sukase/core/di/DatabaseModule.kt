@@ -19,7 +19,7 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): SuKaMeDatabase {
-        val passphrase: ByteArray = SQLiteDatabase.getBytes("example".toCharArray())
+        val passphrase: ByteArray = SQLiteDatabase.getBytes("sukase".toCharArray())
         val factory = SupportFactory(passphrase)
         return Room.databaseBuilder(
             context,
