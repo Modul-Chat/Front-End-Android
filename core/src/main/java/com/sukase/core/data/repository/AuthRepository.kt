@@ -9,7 +9,7 @@ import com.sukase.core.data.base.ApiException
 import com.sukase.core.data.base.BaseError
 import com.sukase.core.data.base.DataResource
 import com.sukase.core.data.base.DatabaseException
-import com.sukase.core.data.model.register.entity.RegisterEntity
+import com.sukase.core.data.model.register.entity.AccountEntity
 import com.sukase.core.data.source.database.SuKaMeDao
 import com.sukase.core.domain.base.DomainResource
 import com.sukase.core.domain.usecase.auth.IAuthRepository
@@ -31,7 +31,7 @@ class AuthRepository @Inject constructor(
 ) : IAuthRepository {
     override suspend fun register(username: String): Flow<DomainResource<Boolean>> = flow {
         emit(DataResource.Loading.mapToDomainResource())
-        dao.register(RegisterEntity(username))
+        dao.register(AccountEntity(id = null, username = username))
         emit(DataResource.Success(true).mapToDomainResource())
     }.catch {
         if (it.message.isNullOrBlank()) {
