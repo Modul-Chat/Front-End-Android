@@ -2,14 +2,14 @@ package com.sukase.core.data.model.chat.entity
 
 import androidx.room.Embedded
 import androidx.room.Relation
-import com.sukase.core.data.model.register.entity.AccountEntity
+import com.sukase.core.data.model.conversation.entity.ConversationEntity
 
-data class ChatAndReceiver(
+data class ChatAndConversation(
     @Embedded
     val chat: ChatEntity,
     @Relation(
-        parentColumn = "receiverId",
+        parentColumn = "conversationId",
         entityColumn = "id"
     )
-    val participants: List<AccountEntity>
+    val conversation: ConversationEntity
 )

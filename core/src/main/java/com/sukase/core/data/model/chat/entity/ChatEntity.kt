@@ -6,11 +6,13 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "chat")
 data class ChatEntity (
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo
-    val id: String,
+    val id: Int = 0,
+    val conversationId: String,
     val message: String,
     val datetime: String,
     val senderId: Int,
-    val receiverId: Int
+    val receiverId: List<Int>,
+    val receiverName: List<String>
 )

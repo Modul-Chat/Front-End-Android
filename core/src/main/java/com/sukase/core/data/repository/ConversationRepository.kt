@@ -34,12 +34,19 @@ class ConversationRepository @Inject constructor(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun getAllConversationList(
-        token: String,
-        id: String
-    ): Flow<DomainResource<List<ConversationModel>>> = dao.getConversationsList().flatMapConcat {
+        token: String
+    ): Flow<DomainResource<List<ConversationModel?>>> = dao.getConversationsList().flatMapConcat {
         flow {
             emit(DataResource.Loading.mapToDomainResource())
-            emit(DataResource.Success(it.map { conversationMapper(it, dataStore.data.first().username) }).mapToDomainResource())
+            emit(DataResource.Success(it.map
+            {
+                if (it != null) {
+                    conversationMapper(it, dataStore.data.first().username)
+                } else {
+                    null
+                }
+            }
+            ).mapToDomainResource())
         }.catch {
             if (it.message.isNullOrBlank()) {
                 emit(

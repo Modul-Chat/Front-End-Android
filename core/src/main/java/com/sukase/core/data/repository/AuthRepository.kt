@@ -31,7 +31,7 @@ class AuthRepository @Inject constructor(
 ) : IAuthRepository {
     override suspend fun register(username: String): Flow<DomainResource<Boolean>> = flow {
         emit(DataResource.Loading.mapToDomainResource())
-        dao.register(AccountEntity(id = null, username = username))
+        dao.register(AccountEntity(username = username))
         emit(DataResource.Success(true).mapToDomainResource())
     }.catch {
         if (it.message.isNullOrBlank()) {

@@ -5,7 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.sukase.core.data.model.chat.entity.ChatAndReceiver
+import com.sukase.core.data.model.chat.entity.ChatAndConversation
+import com.sukase.core.data.model.chat.entity.ChatEntity
 import com.sukase.core.data.model.conversation.entity.ConversationAndParticipants
 import com.sukase.core.data.model.register.entity.AccountEntity
 import kotlinx.coroutines.flow.Flow
@@ -20,9 +21,17 @@ interface SuKaMeDao {
 
     @Transaction
     @Query("SELECT * FROM conversation")
-    fun getConversationsList(): Flow<List<ConversationAndParticipants>>
+    fun getConversationsList(): Flow<List<ConversationAndParticipants?>>
 
     @Transaction
-    @Query("SELECT * FROM chat")
-    fun getChatList(): Flow<List<ChatAndReceiver>>
+    @Query("SELECT * FROM conversation where id = :conversationId")
+    fun getConversation(conversationId: Int): Flow<ConversationAndParticipants>
+
+    @Transaction
+    @Query("SELECT * FROM chat where id = :conversationId")
+    fun getChatList(conversationId: Int): Flow<List<ChatAndConversation?>>
+
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun sendChat(chat: ChatEntity): Long
 }
