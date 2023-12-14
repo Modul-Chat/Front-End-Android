@@ -5,5 +5,5 @@ import com.sukase.core.domain.model.ConversationModel
 import kotlinx.coroutines.flow.Flow
 
 interface IConversationRepository {
-    suspend fun getAllConversationList(token: String): Flow<DomainResource<List<ConversationModel?>>>
+    fun getAllConversationList(token: String): Flow<DomainResource<List<ConversationModel?>>>
 }

@@ -44,6 +44,11 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
 
+    <string name="unknown_error">Unknown Error</string>
+    <string name="loading">Please wait..</string>
+    <string name="empty">Data not found..</string>
+    <string name="success">Success</string>
+
     <string name="conversation_list">Conversation List</string>
     <string name="app_logo">App Logo</string>
     <string name="name_apps">Chat Apps</string>
