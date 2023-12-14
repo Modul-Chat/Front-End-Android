@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/elevation_10"
+    android:id="@+id/container"
+    style="@style/Widget.MaterialComponents.CardView">
+
+    <!-- Foto Profil -->
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/elevation_16"
+        android:layout_marginTop="@dimen/marginTop_16"
+        android:src="@drawable/ic_person"
+        android:scaleType="centerCrop"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:contentDescription="@string/profile_image"/>
+
+    <!-- Nama Pengguna -->
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/profileImage"
+        android:layout_marginStart="@dimen/elevation_16"
+        android:layout_marginTop="@dimen/marginTop_16"
+        android:text="@string/user"
+        android:textSize="@dimen/elevation_16"
+        android:textStyle="bold"
+        style="@style/Widget.MaterialComponents.TextView"/> <!-- Menggunakan style TextView dari Material Components Library -->
+
+    <!-- Pesan Terakhir -->
+    <TextView
+        android:id="@+id/lastMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/username"
+        android:layout_toEndOf="@id/profileImage"
+        android:layout_marginStart="@dimen/elevation_16"
+        android:text="@string/message1"
+        android:textColor="@android:color/darker_gray"
+        style="@style/Widget.MaterialComponents.TextView"/>
+
+</RelativeLayout>
