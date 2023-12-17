@@ -6,7 +6,6 @@
     android:layout_gravity="start"
     android:background="@drawable/receiver_bubble_background"
     android:elevation="@dimen/elevation_4"
-    android:padding="@dimen/elevation_12"
     android:orientation="vertical">
 
     <TextView
@@ -20,7 +19,7 @@
         android:id="@+id/chatTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/elevation_6"
+        android:layout_marginTop="10dp"
         android:textColor="@android:color/darker_gray"
         android:text="@string/times1" />
 </LinearLayout>

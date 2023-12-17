@@ -1,13 +1,16 @@
 package com.sukase.sukame.ui.conversation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.sukase.core.domain.model.ConversationModel
 import com.sukase.sukame.databinding.ActivityConversationBinding
+import com.sukase.sukame.ui.base.NavigationUtils
 import com.sukase.sukame.ui.base.showSnackBar
 import com.sukase.sukame.ui.base.showToast
+import com.sukase.sukame.ui.chat.ChatActivity
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -36,9 +39,9 @@ class ConversationActivity : AppCompatActivity() {
         val adapter = ConversationAdapter()
         adapter.setOnItemClickCallback(object : ConversationAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ConversationModel) {
-//                val toDetailFragment = HomeFragmentDirections.actionHomeFragmentToDetailActivity()
-//                toDetailFragment.id = data.id
-//                findNavController().navigate(toDetailFragment)
+                val intent = Intent(this@ConversationActivity, ChatActivity::class.java)
+                intent.putExtra(NavigationUtils.EXTRA_CHAT, data.id)
+                startActivity(intent)
             }
         })
         adapter.differ.submitList(data.toMutableList())

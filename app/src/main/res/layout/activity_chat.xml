@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground">
@@ -96,7 +97,8 @@
         android:layout_marginStart="@dimen/elevation_10"
         android:layout_marginTop="@dimen/elevation_10"
         android:layout_marginEnd="@dimen/elevation_10"
-        android:layout_marginBottom="@dimen/elevation_10" />
+        android:layout_marginBottom="@dimen/elevation_10"
+        tools:listitem="@layout/item_chat" />
 
     <!-- Bottom layout containing input field and FAB -->
     <RelativeLayout

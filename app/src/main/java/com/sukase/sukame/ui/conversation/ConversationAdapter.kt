@@ -11,7 +11,7 @@ import com.sukase.core.domain.model.ConversationModel
 import com.sukase.sukame.R
 import com.sukase.sukame.databinding.ItemConversationBinding
 
-class ConversationAdapter: RecyclerView.Adapter<ConversationAdapter.ListViewHolder>()  {
+class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.ListViewHolder>() {
     private lateinit var binding: ItemConversationBinding
     private lateinit var onItemClickCallback: OnItemClickCallback
 
@@ -24,7 +24,8 @@ class ConversationAdapter: RecyclerView.Adapter<ConversationAdapter.ListViewHold
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        binding = ItemConversationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding =
+            ItemConversationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ListViewHolder()
     }
 
@@ -51,11 +52,17 @@ class ConversationAdapter: RecyclerView.Adapter<ConversationAdapter.ListViewHold
     }
 
     private val differCallback = object : DiffUtil.ItemCallback<ConversationModel>() {
-        override fun areItemsTheSame(oldItem: ConversationModel, newItem: ConversationModel): Boolean {
+        override fun areItemsTheSame(
+            oldItem: ConversationModel,
+            newItem: ConversationModel
+        ): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: ConversationModel, newItem: ConversationModel): Boolean {
+        override fun areContentsTheSame(
+            oldItem: ConversationModel,
+            newItem: ConversationModel
+        ): Boolean {
             return oldItem == newItem
         }
     }

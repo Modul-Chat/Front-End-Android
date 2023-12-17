@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/elevation_10"
-    android:id="@+id/container"
     style="@style/Widget.MaterialComponents.CardView">
 
     <!-- Foto Profil -->
