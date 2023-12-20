@@ -45,7 +45,7 @@ class ConversationActivity : AppCompatActivity() {
             }
         })
         adapter.differ.submitList(data.toMutableList())
-        binding.conversationRecyclerView.adapter = adapter
+        binding.rvConversation.adapter = adapter
     }
 
 }

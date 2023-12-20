@@ -10,11 +10,14 @@ import com.sukase.core.data.base.DataResource
 import com.sukase.core.data.base.DatabaseException
 import com.sukase.core.data.mapper.chatEntityToModel
 import com.sukase.core.data.mapper.chatModelToEntity
-import com.sukase.core.data.mapper.provideReceiverList
+import com.sukase.core.data.mapper.mapToUserModel
+import com.sukase.core.data.mapper.provideReceiverListModel
 import com.sukase.core.data.mapper.provideSenderModel
 import com.sukase.core.data.source.database.SuKaMeDao
 import com.sukase.core.domain.base.DomainResource
+import com.sukase.core.domain.base.DomainThrowable
 import com.sukase.core.domain.model.ChatModel
+import com.sukase.core.domain.model.UserModel
 import com.sukase.core.domain.usecase.chat.IChatRepository
 import com.sukase.core.utils.UiText
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +29,7 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,59 +38,87 @@ class ChatRepository @Inject constructor(
     private val dao: SuKaMeDao,
     private val dataStore: DataStore<UserPreferences>
 ) : IChatRepository {
-    @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun getChatList(
-        token: String,
-        conversationId: String
-    ): Flow<DomainResource<List<ChatModel?>>> = dao.getChatList(conversationId.toInt()).flatMapConcat {
-        flow {
-            emit(DataResource.Loading.mapToDomainResource())
-            emit(DataResource.Success(it.map {
-                if (it != null) {
-                    chatEntityToModel(it.chat, dataStore.data.first().username)
-                } else {
-                    null
-                }
-            }).mapToDomainResource())
-        }.catch {
-            if (it.message.isNullOrBlank()) {
-                emit(
-                    DataResource.Error(
-                        BaseError(
-                            UiText.StringResource(R.string.unknown_error)
-                        ).mapToDomainThrowable()
-                    ).mapToDomainResource()
-                )
-            } else if (it is HttpException) {
-                emit(
-                    DataResource.Error(
-                        ApiException(
-                            it.code().toString(),
-                            it.message()
-                        ).mapToDomainThrowable()
-                    ).mapToDomainResource()
-                )
-            } else if (it is SQLException) {
-                emit(
-                    DataResource.Error(
-                        DatabaseException(
-                            UiText.DynamicString(it.message.toString())
-                        ).mapToDomainThrowable()
-                    ).mapToDomainResource()
-                )
-            } else {
-                emit(
-                    DataResource.Error(
-                        BaseError(
-                            UiText.DynamicString(it.message.toString())
-                        ).mapToDomainThrowable()
-                    ).mapToDomainResource()
-                )
-            }
-        }.flowOn(Dispatchers.IO)
+    override fun getUser(): Flow<DomainResource<UserModel>> = flow {
+        emit(DataResource.Loading.mapToDomainResource())
+        emit(DataResource.Success(dataStore.data.first().mapToUserModel()).mapToDomainResource())
+    }.catch {
+        if (it.message.isNullOrBlank()) {
+            emit(
+                DataResource.Error(
+                    BaseError(
+                        UiText.StringResource(R.string.unknown_error)
+                    ).mapToDomainThrowable()
+                ).mapToDomainResource()
+            )
+        } else if (it is IOException) {
+            emit(
+                DataResource.Error(
+                    DomainThrowable("exception", UiText.DynamicString(it.message.toString()))
+                ).mapToDomainResource()
+            )
+        } else {
+            DataResource.Error(
+                BaseError(
+                    UiText.DynamicString(it.message.toString())
+                ).mapToDomainThrowable()
+            ).mapToDomainResource()
+        }
     }
 
-    override suspend fun sendChat(
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun getChatList(
+        token: String,
+        conversationId: String
+    ): Flow<DomainResource<List<ChatModel?>>> =
+        dao.getChatList(conversationId.toInt()).flatMapConcat {
+            flow {
+                emit(DataResource.Loading.mapToDomainResource())
+                emit(DataResource.Success(it.map {
+                    if (it != null) {
+                        chatEntityToModel(it)
+                    } else {
+                        null
+                    }
+                }).mapToDomainResource())
+            }.catch {
+                if (it.message.isNullOrBlank()) {
+                    emit(
+                        DataResource.Error(
+                            BaseError(
+                                UiText.StringResource(R.string.unknown_error)
+                            ).mapToDomainThrowable()
+                        ).mapToDomainResource()
+                    )
+                } else if (it is HttpException) {
+                    emit(
+                        DataResource.Error(
+                            ApiException(
+                                it.code().toString(),
+                                it.message()
+                            ).mapToDomainThrowable()
+                        ).mapToDomainResource()
+                    )
+                } else if (it is SQLException) {
+                    emit(
+                        DataResource.Error(
+                            DatabaseException(
+                                UiText.DynamicString(it.message.toString())
+                            ).mapToDomainThrowable()
+                        ).mapToDomainResource()
+                    )
+                } else {
+                    emit(
+                        DataResource.Error(
+                            BaseError(
+                                UiText.DynamicString(it.message.toString())
+                            ).mapToDomainThrowable()
+                        ).mapToDomainResource()
+                    )
+                }
+            }.flowOn(Dispatchers.IO)
+        }
+
+    override fun sendChat(
         token: String,
         conversationId: String,
         message: String
@@ -95,14 +127,13 @@ class ChatRepository @Inject constructor(
         dao.sendChat(
             chatModelToEntity(
                 ChatModel(
-                    id = conversationId,
+                    id = null,
+                    photo = "",
+                    type = "person",
                     message = message,
                     datetime = System.currentTimeMillis().toString(),
                     sender = provideSenderModel(dataStore.data.first()),
-                    receiverList = dao.getConversation(conversationId.toInt())
-                        .first().participants.map {
-                        provideReceiverList(it)
-                    }
+                    receiverList = provideReceiverListModel(dao.getConversation(conversationId.toInt()).first()),
                 ),
                 conversationId
             )

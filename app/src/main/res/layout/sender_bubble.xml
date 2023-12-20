@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sender_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="end"
+    android:layout_marginBottom="8dp"
     android:background="@drawable/sender_bubble_background"
     android:elevation="@dimen/elevation_4"
-    android:padding="@dimen/elevation_12"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="12dp">
 
     <TextView
         android:id="@+id/senderMessageText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="?attr/colorOnBackground"
-        android:text="@string/sent_message" />
+        android:text="@string/sent_message"
+        android:textColor="?attr/colorOnBackground" />
 
     <TextView
         android:id="@+id/chatTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/elevation_6"
-        android:textColor="@android:color/darker_gray"
-        android:text="@string/times2" />
+        android:layout_marginTop="10dp"
+        android:text="@string/times2"
+        android:textColor="@android:color/darker_gray" />
 </LinearLayout>

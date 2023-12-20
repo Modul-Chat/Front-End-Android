@@ -29,9 +29,9 @@ class AuthRepository @Inject constructor(
     private val dao: SuKaMeDao,
     private val dataStore: DataStore<UserPreferences>
 ) : IAuthRepository {
-    override suspend fun register(username: String): Flow<DomainResource<Boolean>> = flow {
+    override suspend fun register(username: String, fullName: String): Flow<DomainResource<Boolean>> = flow {
         emit(DataResource.Loading.mapToDomainResource())
-        dao.register(AccountEntity(username = username))
+        dao.register(AccountEntity(username = username, fullName = fullName))
         emit(DataResource.Success(true).mapToDomainResource())
     }.catch {
         if (it.message.isNullOrBlank()) {
@@ -71,7 +71,7 @@ class AuthRepository @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
 
-    override suspend fun login(username: String): Flow<DomainResource<Boolean>> = flow {
+    override suspend fun login(username: String, fullName: String): Flow<DomainResource<Boolean>> = flow {
         emit(DataResource.Loading.mapToDomainResource())
         when (dao.isUsernameExist(username).first()) {
             true -> {

@@ -1,6 +1,7 @@
 package com.sukase.sukame.ui.chat
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -8,17 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sukase.core.domain.model.ChatModel
 import com.sukase.sukame.databinding.ItemChatBinding
 
-class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ListViewHolder>() {
+class ChatAdapter(private val uid: String) : RecyclerView.Adapter<ChatAdapter.ListViewHolder>() {
     private lateinit var binding: ItemChatBinding
-    private lateinit var onItemClickCallback: OnItemClickCallback
-
-    interface OnItemClickCallback {
-        fun onItemClicked(data: ChatModel)
-    }
-
-    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
-        this.onItemClickCallback = onItemClickCallback
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         binding = ItemChatBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -35,9 +27,22 @@ class ChatAdapter : RecyclerView.Adapter<ChatAdapter.ListViewHolder>() {
     inner class ListViewHolder : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ChatModel) {
             with(binding) {
-                chatLayout
+                if (data.id != uid) {
+                    senderLayout.senderItem.visibility = View.GONE
+                    receiverLayout.apply {
+                        receiverItem.visibility = View.VISIBLE
+                        receiverMessageText.text = data.message
+                        chatTimestamp.text = data.datetime
+                    }
+                } else {
+                    receiverLayout.receiverItem.visibility = View.GONE
+                    senderLayout.apply {
+                        senderItem.visibility = View.VISIBLE
+                        senderMessageText.text = data.message
+                        chatTimestamp.text = data.datetime
+                    }
+                }
             }
-            itemView.setOnClickListener { onItemClickCallback.onItemClicked(data) }
         }
     }
 

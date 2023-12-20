@@ -5,9 +5,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.sukase.core.data.model.chat.entity.ChatAndConversation
 import com.sukase.core.data.model.chat.entity.ChatEntity
-import com.sukase.core.data.model.conversation.entity.ConversationAndParticipants
+import com.sukase.core.data.model.conversation.entity.ConversationEntity
 import com.sukase.core.data.model.register.entity.AccountEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -19,17 +18,18 @@ interface SuKaMeDao {
     @Query("SELECT EXISTS(SELECT * FROM account WHERE username = :username)")
     fun isUsernameExist(username: String): Flow<Boolean>
 
-    @Transaction
     @Query("SELECT * FROM conversation")
-    fun getConversationsList(): Flow<List<ConversationAndParticipants?>>
+    fun getConversationsList(): Flow<List<ConversationEntity?>>
 
-    @Transaction
     @Query("SELECT * FROM conversation where id = :conversationId")
-    fun getConversation(conversationId: Int): Flow<ConversationAndParticipants>
+    fun getConversation(conversationId: Int): Flow<ConversationEntity>
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    fun addConversation(conversationEntity: ConversationEntity)
 
     @Transaction
     @Query("SELECT * FROM chat where id = :conversationId")
-    fun getChatList(conversationId: Int): Flow<List<ChatAndConversation?>>
+    fun getChatList(conversationId: Int): Flow<List<ChatEntity?>>
 
     @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)

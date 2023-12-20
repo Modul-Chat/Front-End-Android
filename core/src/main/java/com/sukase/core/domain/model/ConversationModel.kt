@@ -4,5 +4,6 @@ data class ConversationModel(
     val id: String,
     val name: String,
     val lastMessage: String,
+    val dateTime: String,
     val participantList: List<ParticipantModel>,
 )

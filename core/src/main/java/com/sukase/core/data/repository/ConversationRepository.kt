@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -29,11 +28,10 @@ import javax.inject.Singleton
 @Singleton
 class ConversationRepository @Inject constructor(
     private val dao: SuKaMeDao,
-    private val dataStore: DataStore<UserPreferences>
 ) : IConversationRepository {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun getAllConversationList(
+    override fun getAllConversationList(
         token: String
     ): Flow<DomainResource<List<ConversationModel?>>> = dao.getConversationsList().flatMapConcat {
         flow {
@@ -41,7 +39,7 @@ class ConversationRepository @Inject constructor(
             emit(DataResource.Success(it.map
             {
                 if (it != null) {
-                    conversationMapper(it, dataStore.data.first().username)
+                    conversationMapper(it)
                 } else {
                     null
                 }
