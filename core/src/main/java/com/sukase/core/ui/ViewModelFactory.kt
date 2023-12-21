@@ -1,4 +1,4 @@
-package com.sukase.sukame.ui.base
+package com.sukase.core.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

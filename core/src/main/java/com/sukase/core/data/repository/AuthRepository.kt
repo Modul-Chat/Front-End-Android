@@ -76,7 +76,7 @@ class AuthRepository @Inject constructor(
         when (dao.isUsernameExist(username).first()) {
             true -> {
                 dataStore.updateData {
-                    it.toBuilder().setUsername(username).setUid("807841762").setToken("admin")
+                    it.toBuilder().setUsername(username).setUid("1").setFullName(fullName).setToken("user")
                         .build()
                 }
                 emit(DataResource.Success(true).mapToDomainResource())

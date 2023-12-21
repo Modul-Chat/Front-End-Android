@@ -1,4 +1,4 @@
-package com.sukase.sukame.ui.base
+package com.sukase.sukame.ui.utils
 
 
 object NavigationUtils {

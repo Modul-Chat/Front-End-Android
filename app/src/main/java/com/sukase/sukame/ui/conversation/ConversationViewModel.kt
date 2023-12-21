@@ -19,6 +19,10 @@ class ConversationViewModel @Inject constructor(private val conversationUseCase:
     private var _data = MutableLiveData<List<ConversationModel?>>()
     val data = _data
 
+    init {
+        getConversationList("token")
+    }
+
     fun getConversationList(token: String) {
         conversationUseCase.getAllConversationList(token).onEach {
             when (it) {

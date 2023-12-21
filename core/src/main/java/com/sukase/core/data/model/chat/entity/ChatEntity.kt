@@ -2,7 +2,6 @@ package com.sukase.core.data.model.chat.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(

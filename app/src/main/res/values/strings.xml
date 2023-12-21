@@ -48,11 +48,14 @@
     <string name="loading">Please wait..</string>
     <string name="empty">Data not found..</string>
     <string name="success">Success</string>
+    <string name="blank_edt_field_error">Please fill the required fields</string>
+    <string name="error_hint">Fill here</string>
 
     <string name="conversation_list">Conversation List</string>
     <string name="app_logo">App Logo</string>
     <string name="name_apps">Chat Apps</string>
     <string name="username">Username</string>
+    <string name="full_name">Full Name</string>
     <string name="login">Login</string>
     <string name="to_registration">Don\'t have an account? Sign up</string>
     <string name="backbutton">back button</string>

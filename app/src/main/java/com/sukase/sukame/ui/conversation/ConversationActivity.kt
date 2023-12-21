@@ -5,15 +5,18 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.sukase.core.domain.model.ConversationModel
 import com.sukase.sukame.databinding.ActivityConversationBinding
-import com.sukase.sukame.ui.base.NavigationUtils
+import com.sukase.sukame.ui.utils.NavigationUtils
 import com.sukase.sukame.ui.base.showSnackBar
 import com.sukase.sukame.ui.base.showToast
 import com.sukase.sukame.ui.chat.ChatActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+@AndroidEntryPoint
 class ConversationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityConversationBinding
     private val conversationViewModel: ConversationViewModel by viewModels()
@@ -21,6 +24,9 @@ class ConversationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityConversationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rvConversation.layoutManager = layoutManager
 
         conversationViewModel.data.observe(this) {
             showData(it.filterNotNull())

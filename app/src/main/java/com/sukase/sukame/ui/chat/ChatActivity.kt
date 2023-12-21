@@ -1,19 +1,15 @@
 package com.sukase.sukame.ui.chat
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.sukase.core.domain.model.ChatModel
-import com.sukase.core.domain.model.ConversationModel
-import com.sukase.sukame.R
 import com.sukase.sukame.databinding.ActivityChatBinding
-import com.sukase.sukame.ui.base.NavigationUtils
+import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CHAT
 import com.sukase.sukame.ui.base.showSnackBar
 import com.sukase.sukame.ui.base.showToast
-import com.sukase.sukame.ui.conversation.ConversationAdapter
-import com.sukase.sukame.ui.conversation.ConversationViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -25,7 +21,13 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        chatViewModel.user.observe(this) {
+        val conversationId = Intent().getStringExtra(EXTRA_CHAT) ?: ""
+
+        chatViewModel.user.observe(this) { user ->
+            chatViewModel.getChatList(user.token, conversationId)
+            chatViewModel.data.observe(this) { chat ->
+                showData(chat.filterNotNull(), user.id)
+            }
         }
 
         chatViewModel.eventMessage.onEach {

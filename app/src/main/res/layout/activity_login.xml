@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/logoLabel"
-        style="@style/Widget.MaterialComponents.TextView"
+        style="@style/TextAppearance.Material3.HeadlineMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/appLogo"
@@ -30,22 +30,37 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/usernameEditText"
         style="@style/Widget.Material3.TextInputEditText.FilledBox"
+        android:id="@+id/edt_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/logoLabel"
         android:layout_marginTop="32dp"
-        android:autofillHints="username"
         android:hint="@string/username"
-        android:inputType="text" />
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:inputType="text"
+        android:autofillHints="username" />
+
+    <EditText
+        style="@style/Widget.Material3.TextInputEditText.FilledBox"
+        android:id="@+id/edt_fullName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edt_username"
+        android:layout_marginTop="24dp"
+        android:hint="@string/full_name"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:inputType="text"
+        android:autofillHints="name" />
 
     <Button
         android:id="@+id/loginButton"
-        style="@style/Widget.MaterialComponents.Button"
+        style="@style/Widget.Material3.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/usernameEditText"
+        android:layout_below="@id/edt_fullName"
         android:layout_marginTop="24dp"
         android:elevation="4dp"
         android:text="@string/login" />

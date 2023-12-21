@@ -5,7 +5,8 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "account", indices = [Index(
+    tableName = "account",
+    indices = [Index(
         value = ["username"],
         unique = true
     )]
