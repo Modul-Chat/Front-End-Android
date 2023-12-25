@@ -7,11 +7,11 @@ import javax.inject.Inject
 class AuthInteractor @Inject constructor(private val authRepository: IAuthRepository) :
     AuthUseCase {
     override suspend fun register(username: String, fullName: String): Flow<DomainResource<Boolean>> {
-        return register(username, fullName)
+        return authRepository.register(username, fullName)
     }
 
     override suspend fun login(username: String, fullName: String): Flow<DomainResource<Boolean>> {
-        return login(username, fullName)
+        return authRepository.login(username, fullName)
     }
 
 }

@@ -29,52 +29,78 @@
         android:textSize="28sp"
         android:textStyle="bold" />
 
-    <EditText
-        style="@style/Widget.Material3.TextInputEditText.FilledBox"
-        android:id="@+id/edt_username"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_username"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/logoLabel"
-        android:layout_marginTop="32dp"
-        android:hint="@string/username"
-        android:padding="12dp"
-        android:textSize="16sp"
-        android:inputType="text"
-        android:autofillHints="username" />
+        android:layout_marginTop="32dp">
 
-    <EditText
-        style="@style/Widget.Material3.TextInputEditText.FilledBox"
-        android:id="@+id/edt_fullName"
+        <com.sukase.sukame.ui.base.CannotBlankEditText
+            android:id="@+id/edt_username"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:autofillHints="username"
+            android:hint="@string/username"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:padding="12dp"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_fullName"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edt_username"
-        android:layout_marginTop="24dp"
-        android:hint="@string/full_name"
-        android:padding="12dp"
-        android:textSize="16sp"
-        android:inputType="text"
-        android:autofillHints="name" />
+        android:layout_below="@id/layout_username"
+        android:layout_marginTop="24dp">
+
+        <com.sukase.sukame.ui.base.CannotBlankEditText
+            android:id="@+id/edt_fullName"
+            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:autofillHints="name"
+            android:hint="@string/full_name"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:padding="12dp"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/loginButton"
         style="@style/Widget.Material3.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/edt_fullName"
+        android:layout_below="@id/layout_fullName"
         android:layout_marginTop="24dp"
         android:elevation="4dp"
         android:text="@string/login" />
 
-    <TextView
-        android:id="@+id/signupText"
-        style="@style/Widget.MaterialComponents.TextView"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/loginButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:text="@string/to_registration"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="14sp" />
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/register_dialog" />
+
+        <TextView
+            android:id="@+id/tv_register"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:text="@string/register_text_button" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -15,9 +15,10 @@ import com.sukase.core.domain.base.DomainResource
 import com.sukase.core.domain.usecase.auth.IAuthRepository
 import com.sukase.core.utils.UiText
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
@@ -71,56 +72,55 @@ class AuthRepository @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
 
-    override suspend fun login(username: String, fullName: String): Flow<DomainResource<Boolean>> = flow {
-        emit(DataResource.Loading.mapToDomainResource())
-        when (dao.isUsernameExist(username).first()) {
-            true -> {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override suspend fun login(username: String, fullName: String): Flow<DomainResource<Boolean>> = dao.getAccount(username, fullName).flatMapConcat { account ->
+        flow {
+            emit(DataResource.Loading.mapToDomainResource())
+            if (account != null) {
                 dataStore.updateData {
-                    it.toBuilder().setUsername(username).setUid("1").setFullName(fullName).setToken("user")
+                    it.toBuilder().setUsername(username).setUid(account.id.toString())
+                        .setFullName(fullName).setToken("user")
                         .build()
                 }
                 emit(DataResource.Success(true).mapToDomainResource())
-            }
-
-            false -> {
+            } else {
                 emit(DataResource.Success(false).mapToDomainResource())
             }
-        }
-    }.catch {
-        if (it.message.isNullOrBlank()) {
-            emit(
-                DataResource.Error(
-                    BaseError(
-                        UiText.StringResource(R.string.unknown_error)
-                    ).mapToDomainThrowable()
-                ).mapToDomainResource()
-            )
-        } else if (it is HttpException) {
-            emit(
-                DataResource.Error(
-                    ApiException(
-                        it.code().toString(),
-                        it.message()
-                    ).mapToDomainThrowable()
-                ).mapToDomainResource()
-            )
-        } else if (it is SQLException) {
-            emit(
-                DataResource.Error(
-                    DatabaseException(
-                        UiText.DynamicString(it.message.toString())
-                    ).mapToDomainThrowable()
-                ).mapToDomainResource()
-            )
-        } else {
-            emit(
-                DataResource.Error(
-                    BaseError(
-                        UiText.DynamicString(it.message.toString())
-                    ).mapToDomainThrowable()
-                ).mapToDomainResource()
-            )
-        }
+        }.catch {
+            if (it.message.isNullOrBlank()) {
+                emit(
+                    DataResource.Error(
+                        BaseError(
+                            UiText.StringResource(R.string.unknown_error)
+                        ).mapToDomainThrowable()
+                    ).mapToDomainResource()
+                )
+            } else if (it is HttpException) {
+                emit(
+                    DataResource.Error(
+                        ApiException(
+                            it.code().toString(),
+                            it.message()
+                        ).mapToDomainThrowable()
+                    ).mapToDomainResource()
+                )
+            } else if (it is SQLException) {
+                emit(
+                    DataResource.Error(
+                        DatabaseException(
+                            UiText.DynamicString(it.message.toString())
+                        ).mapToDomainThrowable()
+                    ).mapToDomainResource()
+                )
+            } else {
+                emit(
+                    DataResource.Error(
+                        BaseError(
+                            UiText.DynamicString(it.message.toString())
+                        ).mapToDomainThrowable()
+                    ).mapToDomainResource()
+                )
+            }
+        }.flowOn(Dispatchers.IO)
     }
-
 }

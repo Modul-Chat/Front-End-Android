@@ -23,7 +23,7 @@ class ConversationViewModel @Inject constructor(private val conversationUseCase:
         getConversationList("token")
     }
 
-    fun getConversationList(token: String) {
+    private fun getConversationList(token: String) {
         conversationUseCase.getAllConversationList(token).onEach {
             when (it) {
                 is DomainResource.Loading -> {
@@ -34,7 +34,7 @@ class ConversationViewModel @Inject constructor(private val conversationUseCase:
                 }
 
                 is DomainResource.Success -> {
-                    _data = MutableLiveData(it.data)
+                    _data.postValue((it.data))
                     _eventMessage.send(UiText.StringResource(R.string.success))
                 }
 

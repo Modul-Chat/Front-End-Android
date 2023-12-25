@@ -15,8 +15,8 @@ interface SuKaMeDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun register(accountEntity: AccountEntity)
 
-    @Query("SELECT EXISTS(SELECT * FROM account WHERE username = :username)")
-    fun isUsernameExist(username: String): Flow<Boolean>
+    @Query("SELECT * FROM account WHERE username = :username AND fullName = :fullName LIMIT 1")
+    fun getAccount(username: String, fullName: String): Flow<AccountEntity?>
 
     @Query("SELECT * FROM conversation")
     fun getConversationsList(): Flow<List<ConversationEntity?>>

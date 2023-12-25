@@ -30,7 +30,7 @@ class CannotBlankEditText : com.google.android.material.textfield.TextInputEditT
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().isBlank()) error = context.getString(R.string.error_hint)
+                error = if (s.toString().isBlank()) context.getString(R.string.error_hint) else null
             }
 
             override fun afterTextChanged(s: Editable?) {

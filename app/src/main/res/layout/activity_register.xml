@@ -41,6 +41,7 @@
             android:layout_height="48dp"
             android:autofillHints="username"
             android:hint="@string/username"
+            android:imeOptions="actionNext"
             android:inputType="text"
             android:padding="12dp"
             android:textSize="16sp" />
@@ -62,6 +63,7 @@
             android:layout_height="48dp"
             android:autofillHints="name"
             android:hint="@string/full_name"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:padding="12dp"
             android:textSize="16sp" />

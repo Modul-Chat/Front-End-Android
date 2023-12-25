@@ -9,8 +9,8 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-@InstallIn(SingletonComponent::class)
 @Module(includes = [DatabaseModule::class, DataStoreModule::class])
+@InstallIn(SingletonComponent::class)
 abstract class AuthModule {
     @Binds
     abstract fun provideRepository(authRepository: AuthRepository): IAuthRepository
