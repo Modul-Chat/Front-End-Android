@@ -1,9 +1,9 @@
 package com.sukase.sukame.ui.conversation
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sukase.core.domain.base.DomainResource
-import com.sukase.core.domain.model.ConversationModel
 import com.sukase.core.domain.usecase.conversation.ConversationUseCase
 import com.sukase.core.utils.UiText
 import com.sukase.sukame.R
@@ -16,25 +16,27 @@ import javax.inject.Inject
 @HiltViewModel
 class ConversationViewModel @Inject constructor(private val conversationUseCase: ConversationUseCase) :
     BaseViewModel() {
-    private var _data = MutableLiveData<List<ConversationModel?>>()
-    val data = _data
+
+    private var _token = MutableLiveData<String?>()
+    val token: LiveData<String?> = _token
 
     init {
-        getConversationList("token")
+        getToken()
     }
 
-    private fun getConversationList(token: String) {
-        conversationUseCase.getAllConversationList(token).onEach {
+    private fun getToken() {
+        conversationUseCase.getToken().onEach {
             when (it) {
                 is DomainResource.Loading -> {
                     _eventMessage.send(UiText.StringResource(R.string.loading))
                 }
+
                 is DomainResource.Empty -> {
                     _eventMessage.send(UiText.StringResource(R.string.empty))
                 }
 
                 is DomainResource.Success -> {
-                    _data.postValue((it.data))
+                    _token.postValue((it.data))
                     _eventMessage.send(UiText.StringResource(R.string.success))
                 }
 
@@ -48,4 +50,7 @@ class ConversationViewModel @Inject constructor(private val conversationUseCase:
             }
         }.launchIn(viewModelScope)
     }
+
+    fun getConversationList(token: String) =
+        conversationUseCase.getAllConversationList(token)
 }

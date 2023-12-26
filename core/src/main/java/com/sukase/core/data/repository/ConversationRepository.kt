@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
@@ -28,7 +29,32 @@ import javax.inject.Singleton
 @Singleton
 class ConversationRepository @Inject constructor(
     private val dao: SuKaMeDao,
+    private val dataStore: DataStore<UserPreferences>
 ) : IConversationRepository {
+
+    override fun getToken(): Flow<DomainResource<String?>> = flow {
+        emit(DataResource.Loading.mapToDomainResource())
+        val token = dataStore.data.firstOrNull()?.token
+        emit(DataResource.Success(token).mapToDomainResource())
+    }.catch {
+        if (it.message.isNullOrBlank()) {
+            emit(
+                DataResource.Error(
+                    BaseError(
+                        UiText.StringResource(R.string.unknown_error)
+                    ).mapToDomainThrowable()
+                ).mapToDomainResource()
+            )
+        } else {
+            emit(
+                DataResource.Error(
+                    BaseError(
+                        UiText.DynamicString(it.message.toString())
+                    ).mapToDomainThrowable()
+                ).mapToDomainResource()
+            )
+        }
+    }.flowOn(Dispatchers.IO)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getAllConversationList(

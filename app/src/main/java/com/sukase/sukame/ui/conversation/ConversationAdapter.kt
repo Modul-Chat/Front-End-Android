@@ -1,5 +1,6 @@
 package com.sukase.sukame.ui.conversation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -17,6 +18,7 @@ class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.ListViewHol
 
     interface OnItemClickCallback {
         fun onItemClicked(data: ConversationModel)
+        fun onProfileClicked(profile: String)
     }
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
@@ -38,16 +40,23 @@ class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.ListViewHol
 
     inner class ListViewHolder : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ConversationModel) {
-            with(binding) {
-                profileImage.load(null) {
+            binding.apply {
+                profileImage.load(R.drawable.ic_person) {
                     crossfade(true)
                     placeholder(R.drawable.ic_person)
                     transformations(CircleCropTransformation())
                 }
                 username.text = data.name
                 lastMessage.text = data.lastMessage
+                profileImage.setOnClickListener {
+                    Log.d("conversation", "masuk click photo")
+                    onItemClickCallback.onProfileClicked(data.photo)
+                }
             }
-            itemView.setOnClickListener { onItemClickCallback.onItemClicked(data) }
+            itemView.setOnClickListener {
+                Log.d("conversation", "masuk click semua")
+                onItemClickCallback.onItemClicked(data)
+            }
         }
     }
 

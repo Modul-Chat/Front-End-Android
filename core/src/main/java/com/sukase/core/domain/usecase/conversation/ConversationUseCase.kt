@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface ConversationUseCase {
     fun getAllConversationList(token: String): Flow<DomainResource<List<ConversationModel?>>>
+
+    fun getToken(): Flow<DomainResource<String?>>
 }

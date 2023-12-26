@@ -8,6 +8,7 @@ fun conversationMapper(input: ConversationEntity): ConversationModel =
     ConversationModel(
         id = input.id,
         name = input.name,
+        photo = input.photo,
         lastMessage = input.lastMessage ?: "",
         dateTime = input.dateTime ?: "",
         participantList = input.participantsId.mapIndexed { index, i ->

@@ -12,4 +12,8 @@ class ConversationInteractor @Inject constructor(private val conversationReposit
     ): Flow<DomainResource<List<ConversationModel?>>> {
         return conversationRepository.getAllConversationList(token)
     }
+
+    override fun getToken(): Flow<DomainResource<String?>> {
+        return conversationRepository.getToken()
+    }
 }
