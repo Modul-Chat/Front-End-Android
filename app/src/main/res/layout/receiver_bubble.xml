@@ -4,25 +4,47 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="start"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/receiver_bubble_background"
-    android:elevation="@dimen/elevation_4"
-    android:orientation="vertical"
-    android:padding="12dp">
+    android:orientation="horizontal"
+    android:elevation="@dimen/elevation_4">
 
-    <TextView
-        android:id="@+id/receiverMessageText"
+    <!-- Foto Profil -->
+    <ImageView
+        android:id="@+id/receiverProfileImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/elevation_4"
+        android:layout_marginTop="@dimen/marginTop_8"
+        android:src="@drawable/ic_person"
+        android:scaleType="centerCrop"
+        style="@style/Widget.AppCompat.ImageButton"
+        android:contentDescription="@string/profile_image" />
+
+    <!-- Bubble Chat -->
+    <LinearLayout
+        android:id="@+id/receiverBubbleGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/received_message"
-        android:textColor="@android:color/black" />
+        android:orientation="vertical"
+        android:background="@drawable/receiver_bubble_background"
+        android:padding="@dimen/elevation_8"
+        android:layout_marginStart="8dp">
 
-    <TextView
-        android:id="@+id/chatTimestamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/times1"
-        android:textColor="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/receiverMessageText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:text="@string/received_message" />
+
+        <TextView
+            android:id="@+id/chatTimestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/elevation_6"
+            android:textColor="@android:color/darker_gray"
+            android:text="@string/times1"
+            android:textSize="@dimen/elevation_10"/>
+    </LinearLayout>
+
 </LinearLayout>
-
