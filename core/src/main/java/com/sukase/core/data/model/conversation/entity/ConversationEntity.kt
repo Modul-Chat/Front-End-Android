@@ -13,7 +13,7 @@ data class ConversationEntity(
     val photo: String,
     val type: String,
     val lastMessage: String?,
-    val dateTime: String?,
+    val dateTime: Long?,
     val participantsId: Set<Int>,
     val participantsUsername: Set<String>,
     val participantsFullName: List<String>,

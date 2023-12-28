@@ -2,11 +2,9 @@ package com.sukase.core.domain.usecase.chat
 
 import com.sukase.core.domain.base.DomainResource
 import com.sukase.core.domain.model.ChatModel
-import com.sukase.core.domain.model.UserModel
 import kotlinx.coroutines.flow.Flow
 
 interface IChatRepository {
-    fun getUser(): Flow<DomainResource<UserModel>>
 
     fun getChatList(
         token: String,
@@ -17,5 +15,5 @@ interface IChatRepository {
         token: String,
         conversationId: String,
         message: String
-    ): Flow<DomainResource<Boolean>>
+    ): Flow<DomainResource<ChatModel>>
 }

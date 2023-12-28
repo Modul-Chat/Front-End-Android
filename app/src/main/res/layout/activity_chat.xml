@@ -109,16 +109,14 @@
         android:layout_marginBottom="@dimen/width_5">
 
         <!-- Input field -->
-        <EditText
+        <com.sukase.sukame.ui.base.CannotBlankEditText
             android:id="@+id/enter_msg"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_45"
+            android:layout_height="48dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/elevation_16"
             android:layout_marginEnd="@dimen/elevation_10"
             android:layout_toStartOf="@id/flot"
-            android:autofillHints="username"
             android:background="@drawable/curved_grey"
             android:drawableStart="@drawable/ic_add_circle"
             android:drawablePadding="@dimen/elevation_6"

@@ -10,12 +10,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sukase.core.domain.base.DomainResource
 import com.sukase.core.domain.model.ConversationModel
+import com.sukase.core.domain.model.UserModel
 import com.sukase.sukame.databinding.ActivityConversationBinding
 import com.sukase.sukame.ui.base.showSnackBar
 import com.sukase.sukame.ui.base.showToast
 import com.sukase.sukame.ui.chat.ChatActivity
 import com.sukase.sukame.ui.login.LoginActivity
-import com.sukase.sukame.ui.utils.NavigationUtils
+import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CONVERSATION_ID
+import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CONVERSATION_TOKEN
+import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CONVERSATION_UID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -32,15 +35,11 @@ class ConversationActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rvConversation.layoutManager = layoutManager
 
-
-        conversationViewModel.token.observe(this) { token ->
-            Log.d("conversation", "token $token")
-            if (token.isNullOrBlank()) {
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            } else {
+        conversationViewModel.user.observe(this) { user ->
+            Log.d("conversation", "user $user")
+            if (user != null) {
                 Log.d("conversation", "masuk conversation")
-                conversationViewModel.getConversationList(token).onEach {
+                conversationViewModel.getConversationList(user.token).onEach {
                     when (it) {
                         is DomainResource.Loading -> {
                             showLoading(true)
@@ -52,7 +51,7 @@ class ConversationActivity : AppCompatActivity() {
 
                         is DomainResource.Success -> {
                             showLoading(false)
-                            showData(it.data.filterNotNull())
+                            showData(it.data.filterNotNull(), user)
                         }
 
                         is DomainResource.Error -> {
@@ -64,6 +63,9 @@ class ConversationActivity : AppCompatActivity() {
                         }
                     }
                 }.launchIn(lifecycleScope)
+            } else {
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
             }
         }
 
@@ -76,12 +78,15 @@ class ConversationActivity : AppCompatActivity() {
         }.launchIn(lifecycleScope)
     }
 
-    private fun showData(data: List<ConversationModel>) {
+    private fun showData(data: List<ConversationModel>, user: UserModel) {
         val adapter = ConversationAdapter()
+        Log.d("chat", "$user")
         adapter.setOnItemClickCallback(object : ConversationAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ConversationModel) {
                 val intent = Intent(this@ConversationActivity, ChatActivity::class.java)
-                intent.putExtra(NavigationUtils.EXTRA_CHAT, data.id)
+                intent.putExtra(EXTRA_CONVERSATION_ID, data.id)
+                    .putExtra(EXTRA_CONVERSATION_TOKEN, user.token)
+                    .putExtra(EXTRA_CONVERSATION_UID, user.id)
                 startActivity(intent)
             }
 

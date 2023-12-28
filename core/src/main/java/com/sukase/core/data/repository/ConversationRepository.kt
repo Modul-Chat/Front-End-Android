@@ -9,9 +9,12 @@ import com.sukase.core.data.base.BaseError
 import com.sukase.core.data.base.DataResource
 import com.sukase.core.data.base.DatabaseException
 import com.sukase.core.data.mapper.conversationMapper
+import com.sukase.core.data.mapper.mapToUserModel
 import com.sukase.core.data.source.database.SuKaMeDao
 import com.sukase.core.domain.base.DomainResource
+import com.sukase.core.domain.base.DomainThrowable
 import com.sukase.core.domain.model.ConversationModel
+import com.sukase.core.domain.model.UserModel
 import com.sukase.core.domain.usecase.conversation.IConversationRepository
 import com.sukase.core.utils.UiText
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +26,7 @@ import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,10 +36,10 @@ class ConversationRepository @Inject constructor(
     private val dataStore: DataStore<UserPreferences>
 ) : IConversationRepository {
 
-    override fun getToken(): Flow<DomainResource<String?>> = flow {
+    override fun getUser(): Flow<DomainResource<UserModel?>> = flow {
         emit(DataResource.Loading.mapToDomainResource())
-        val token = dataStore.data.firstOrNull()?.token
-        emit(DataResource.Success(token).mapToDomainResource())
+        val user = dataStore.data.firstOrNull()?.mapToUserModel()
+        emit(DataResource.Success(user).mapToDomainResource())
     }.catch {
         if (it.message.isNullOrBlank()) {
             emit(
@@ -43,6 +47,12 @@ class ConversationRepository @Inject constructor(
                     BaseError(
                         UiText.StringResource(R.string.unknown_error)
                     ).mapToDomainThrowable()
+                ).mapToDomainResource()
+            )
+        } else if (it is IOException) {
+            emit(
+                DataResource.Error(
+                    DomainThrowable("exception", UiText.DynamicString(it.message.toString()))
                 ).mapToDomainResource()
             )
         } else {

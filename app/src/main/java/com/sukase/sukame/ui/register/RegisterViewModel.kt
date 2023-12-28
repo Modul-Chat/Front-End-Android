@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(private val authUseCase: AuthUseCase) :
     BaseViewModel() {
-    private var _isSuccess = MutableLiveData<Boolean?>()
+    private val _isSuccess = MutableLiveData<Boolean?>()
     val isSuccess: LiveData<Boolean?> = _isSuccess
 
     init {

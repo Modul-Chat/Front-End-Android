@@ -15,7 +15,7 @@ data class ChatEntity(
     val photo: String,
     val type: String,
     val message: String,
-    val datetime: String,
+    val datetime: Long,
     val senderId: Int,
     val senderUsername: String,
     val senderFullName: String,

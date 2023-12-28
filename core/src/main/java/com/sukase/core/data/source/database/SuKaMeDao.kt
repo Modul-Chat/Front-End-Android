@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
 import com.sukase.core.data.model.chat.entity.ChatEntity
 import com.sukase.core.data.model.conversation.entity.ConversationEntity
 import com.sukase.core.data.model.register.entity.AccountEntity
@@ -27,11 +26,9 @@ interface SuKaMeDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     fun addConversation(conversationEntity: ConversationEntity)
 
-    @Transaction
-    @Query("SELECT * FROM chat where id = :conversationId")
+    @Query("SELECT * FROM chat where conversationId = :conversationId order by datetime DESC")
     fun getChatList(conversationId: Int): Flow<List<ChatEntity?>>
 
-    @Transaction
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     fun sendChat(chat: ChatEntity): Long
 }

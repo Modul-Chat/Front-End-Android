@@ -27,7 +27,7 @@ class ChatAdapter(private val uid: String) : RecyclerView.Adapter<ChatAdapter.Li
     inner class ListViewHolder : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: ChatModel) {
             with(binding) {
-                if (data.id != uid) {
+                if (data.sender.id != uid) {
                     senderLayout.senderItem.visibility = View.GONE
                     receiverLayout.apply {
                         receiverItem.visibility = View.VISIBLE

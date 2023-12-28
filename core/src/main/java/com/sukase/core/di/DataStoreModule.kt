@@ -3,9 +3,7 @@ package com.sukase.core.di
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
-import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStoreFile
-import androidx.datastore.preferences.core.emptyPreferences
 import com.sukase.core.UserPreferences
 import com.sukase.core.data.source.datastore.UserPreferencesSerializer
 import dagger.Module

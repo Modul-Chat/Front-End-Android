@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.sukase.core.domain.base.DomainResource
+import com.sukase.core.domain.model.UserModel
 import com.sukase.core.domain.usecase.conversation.ConversationUseCase
 import com.sukase.core.utils.UiText
 import com.sukase.sukame.R
@@ -17,15 +18,15 @@ import javax.inject.Inject
 class ConversationViewModel @Inject constructor(private val conversationUseCase: ConversationUseCase) :
     BaseViewModel() {
 
-    private var _token = MutableLiveData<String?>()
-    val token: LiveData<String?> = _token
+    private val _user = MutableLiveData<UserModel?>()
+    val user: LiveData<UserModel?> = _user
 
     init {
         getToken()
     }
 
     private fun getToken() {
-        conversationUseCase.getToken().onEach {
+        conversationUseCase.getUser().onEach {
             when (it) {
                 is DomainResource.Loading -> {
                     _eventMessage.send(UiText.StringResource(R.string.loading))
@@ -36,7 +37,7 @@ class ConversationViewModel @Inject constructor(private val conversationUseCase:
                 }
 
                 is DomainResource.Success -> {
-                    _token.postValue((it.data))
+                    _user.postValue((it.data))
                     _eventMessage.send(UiText.StringResource(R.string.success))
                 }
 

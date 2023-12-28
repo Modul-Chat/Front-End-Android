@@ -6,6 +6,9 @@ import com.sukase.core.data.model.conversation.entity.ConversationEntity
 import com.sukase.core.domain.model.ChatModel
 import com.sukase.core.domain.model.ReceiverModel
 import com.sukase.core.domain.model.SenderModel
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 
 fun provideSenderModel(userPref: UserPreferences): SenderModel =
@@ -26,7 +29,7 @@ fun chatEntityToModel(input: ChatEntity): ChatModel =
         photo = input.photo,
         type = input.type,
         message = input.message,
-        datetime = input.datetime,
+        datetime = Instant.ofEpochMilli(input.datetime).atZone(ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
         sender = SenderModel(input.senderId.toString(), input.senderUsername, input.senderFullName),
         receiverList = input.receiverId.mapIndexedNotNull { index, i ->
             ReceiverModel(
@@ -36,18 +39,3 @@ fun chatEntityToModel(input: ChatEntity): ChatModel =
             ).takeIf { i != input.senderId }
         }
     )
-
-fun chatModelToEntity(input: ChatModel, conversationId: String): ChatEntity = ChatEntity(
-    id = 0,
-    conversationId = conversationId,
-    photo = input.photo,
-    type = input.type,
-    message = input.message,
-    datetime = input.datetime,
-    senderId = input.sender.id.toInt(),
-    senderUsername = input.sender.username,
-    senderFullName = input.sender.fullName,
-    receiverId = input.receiverList.map { it.id.toInt() }.toSet(),
-    receiverUsername = input.receiverList.map { it.username }.toSet(),
-    receiverFullName = input.receiverList.map { it.fullName }
-)
