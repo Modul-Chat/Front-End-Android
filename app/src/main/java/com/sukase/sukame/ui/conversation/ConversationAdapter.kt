@@ -48,6 +48,7 @@ class ConversationAdapter : RecyclerView.Adapter<ConversationAdapter.ListViewHol
                 }
                 username.text = data.name
                 lastMessage.text = data.lastMessage
+                tvLastMessageTime.text = data.dateTime
                 profileImage.setOnClickListener {
                     Log.d("conversation", "masuk click photo")
                     onItemClickCallback.onProfileClicked(data.photo)
