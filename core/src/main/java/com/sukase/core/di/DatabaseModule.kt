@@ -21,7 +21,7 @@ class DatabaseModule {
             context,
             SuKaMeDatabase::class.java,
             "SuKaMe.db"
-        ).createFromAsset("database/dummy.db").fallbackToDestructiveMigration().build()
+        ).createFromAsset("database/dummy.db").build()
     }
 
     @Provides
