@@ -31,6 +31,7 @@ class ChatViewModel @Inject constructor(private val chatUseCase: ChatUseCase) : 
                     is DomainResource.Loading -> {
                         _eventMessage.send(UiText.StringResource(R.string.loading))
                     }
+
                     is DomainResource.Empty -> {
                         _eventMessage.send(UiText.StringResource(R.string.empty))
                     }
@@ -58,13 +59,14 @@ class ChatViewModel @Inject constructor(private val chatUseCase: ChatUseCase) : 
                 is DomainResource.Loading -> {
                     _eventMessage.send(UiText.StringResource(R.string.loading))
                 }
+
                 is DomainResource.Empty -> {
                     _eventMessage.send(UiText.StringResource(R.string.empty))
                 }
 
                 is DomainResource.Success -> {
-                    _data.postValue(_data.value?.plus(listOf(it.data)))
-                    Log.d("chat", "${_data.value?.plus(listOf(it.data))}")
+                    _data.postValue(listOf(it.data).plus(_data.value ?: emptyList()))
+                    Log.d("chat", "${listOf(it.data).plus(_data.value ?: emptyList())}")
                     _eventMessage.send(UiText.StringResource(R.string.success))
                 }
 

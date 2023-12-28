@@ -12,6 +12,7 @@ import com.sukase.sukame.ui.base.showSnackBar
 import com.sukase.sukame.ui.base.showToast
 import com.sukase.sukame.ui.utils.EditTextUtils
 import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CONVERSATION_ID
+import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CONVERSATION_NAME
 import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CONVERSATION_TOKEN
 import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CONVERSATION_UID
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,9 +34,11 @@ class ChatActivity : AppCompatActivity() {
         val conversationId = intent.getStringExtra(EXTRA_CONVERSATION_ID)
         val token = intent.getStringExtra(EXTRA_CONVERSATION_TOKEN)
         val uid = intent.getStringExtra(EXTRA_CONVERSATION_UID)
+        val name = intent.getStringExtra(EXTRA_CONVERSATION_NAME)
+
+        binding.tvTitle.text = name
 
         Log.d("chat", "$conversationId , $token, $uid")
-
         if (!conversationId.isNullOrBlank() && !token.isNullOrBlank() && !uid.isNullOrBlank()) {
             Log.d("chat", "masuk if")
             chatViewModel.apply {
@@ -50,6 +53,8 @@ class ChatActivity : AppCompatActivity() {
                     flot.setOnClickListener {
                         Log.d("chat", "masuk click")
                         chatViewModel.sendChat(token, conversationId.toString(), enterMsg.text.toString())
+                        enterMsg.setText("")
+                        enterMsg.error = null
                     }
                 }
             }

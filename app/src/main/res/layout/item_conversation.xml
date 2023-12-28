@@ -3,16 +3,15 @@
     style="@style/Widget.MaterialComponents.CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/elevation_10">
+    android:padding="12dp">
 
     <!-- Foto Profil -->
     <ImageView
         android:id="@+id/profileImage"
         style="@style/Widget.AppCompat.ImageButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_marginStart="@dimen/elevation_16"
-        android:layout_marginTop="@dimen/marginTop_16"
         android:contentDescription="@string/profile_image"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_person" />
@@ -24,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/elevation_16"
-        android:layout_marginTop="@dimen/marginTop_16"
+        android:layout_marginVertical="1dp"
         android:layout_toEndOf="@id/profileImage"
         android:ellipsize="end"
         android:maxLines="1"
@@ -40,10 +39,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/username"
         android:layout_marginStart="@dimen/elevation_16"
+        android:layout_marginVertical="1dp"
         android:layout_toEndOf="@id/profileImage"
         android:ellipsize="end"
         android:maxLines="1"
         android:text="@string/message1"
         android:textColor="@android:color/darker_gray" />
 
+    <TextView
+        android:id="@+id/tv_last_message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/times1"
+        android:layout_below="@id/lastMessage"
+        android:layout_marginStart="@dimen/elevation_16"
+        android:layout_marginVertical="1dp"
+        android:layout_toEndOf="@id/profileImage"
+        android:textSize="12sp"
+        android:textColor="@android:color/darker_gray" />
 </RelativeLayout>

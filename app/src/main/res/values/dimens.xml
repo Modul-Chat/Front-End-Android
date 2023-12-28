@@ -4,7 +4,7 @@
     <dimen name="margin_32">32dp</dimen>
     <dimen name="width_5">5dp</dimen>
     <dimen name="elevation_6">6dp</dimen>
-    <dimen name="elevation_10">10sp</dimen>
+    <dimen name="elevation_10">10dp</dimen>
     <dimen name="elevation_16">16sp</dimen>
     <dimen name="height_45">45dp</dimen>
     <dimen name="height_42">42dp</dimen>

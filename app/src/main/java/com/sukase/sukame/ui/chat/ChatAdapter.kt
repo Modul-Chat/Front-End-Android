@@ -32,14 +32,14 @@ class ChatAdapter(private val uid: String) : RecyclerView.Adapter<ChatAdapter.Li
                     receiverLayout.apply {
                         receiverItem.visibility = View.VISIBLE
                         receiverMessageText.text = data.message
-                        chatTimestamp.text = data.datetime
+                        receiverChatTimestamp.text = data.datetime
                     }
                 } else {
                     receiverLayout.receiverItem.visibility = View.GONE
                     senderLayout.apply {
                         senderItem.visibility = View.VISIBLE
                         senderMessageText.text = data.message
-                        chatTimestamp.text = data.datetime
+                        senderChatTimestamp.text = data.datetime
                     }
                 }
             }

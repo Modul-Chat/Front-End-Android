@@ -17,6 +17,7 @@ import com.sukase.sukame.ui.base.showToast
 import com.sukase.sukame.ui.chat.ChatActivity
 import com.sukase.sukame.ui.login.LoginActivity
 import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CONVERSATION_ID
+import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CONVERSATION_NAME
 import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CONVERSATION_TOKEN
 import com.sukase.sukame.ui.utils.NavigationUtils.EXTRA_CONVERSATION_UID
 import dagger.hilt.android.AndroidEntryPoint
@@ -87,6 +88,7 @@ class ConversationActivity : AppCompatActivity() {
                 intent.putExtra(EXTRA_CONVERSATION_ID, data.id)
                     .putExtra(EXTRA_CONVERSATION_TOKEN, user.token)
                     .putExtra(EXTRA_CONVERSATION_UID, user.id)
+                    .putExtra(EXTRA_CONVERSATION_NAME, data.name)
                 startActivity(intent)
             }
 
